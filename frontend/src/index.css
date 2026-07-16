@@ -1,0 +1,255 @@
+/* ============================================================
+   Finance Tracker — "ledger" look
+   Ink-blue text on paper white, green for income, brick for
+   expenses, tabular numerals so amounts line up like a ledger.
+   ============================================================ */
+
+:root {
+  --paper: #fbfaf7;
+  --card: #ffffff;
+  --ink: #1e2a32;
+  --ink-soft: #5b6a74;
+  --line: #e3e0d8;
+  --income: #1f5c45;
+  --expense: #a4432c;
+  --accent: #2e4a6b;
+  --radius: 6px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+}
+
+h1, h2 {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+button, input, select {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.95rem;
+}
+
+/* ---------- auth pages ---------- */
+.auth-wrap {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.auth-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 2rem;
+  width: 100%;
+  max-width: 380px;
+}
+
+.brand {
+  margin: 0;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+
+.auth-card h1 { margin: 0.25rem 0 1.25rem; font-size: 1.6rem; }
+
+.auth-card form { display: grid; gap: 0.9rem; }
+
+.auth-card label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.hint { color: var(--ink-soft); font-weight: normal; }
+
+input, select {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+}
+
+input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+button:disabled { opacity: 0.6; cursor: wait; }
+
+button.ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--line);
+}
+
+button.ghost.danger { color: var(--expense); }
+
+.switch { font-size: 0.9rem; color: var(--ink-soft); }
+.switch a { color: var(--accent); }
+
+.error {
+  color: var(--expense);
+  font-size: 0.85rem;
+  margin: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- dashboard ---------- */
+.dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 4rem;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.topbar h1 { margin: 0; font-size: 1.5rem; }
+
+.totals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.total-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+}
+
+.total-card span {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.total-card strong {
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.total-card.income strong { color: var(--income); }
+.total-card.expense strong { color: var(--expense); }
+
+/* ---------- entry form ---------- */
+.expense-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.6rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.expense-form .span-all { grid-column: 1 / -1; }
+
+/* ---------- charts ---------- */
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+.chart h2 { margin: 0 0 0.5rem; font-size: 1rem; }
+
+/* ---------- ledger table ---------- */
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+.expense-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 2px solid var(--ink);
+}
+
+.expense-table td {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.expense-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.expense-table td.income { color: var(--income); }
+.expense-table td.expense { color: var(--expense); }
+
+.tag {
+  font-size: 0.78rem;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  color: var(--ink-soft);
+}
+
+.actions { text-align: right; }
+
+.empty {
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 2rem 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  button { transition: opacity 120ms ease; }
+  button:hover { opacity: 0.88; }
+}
