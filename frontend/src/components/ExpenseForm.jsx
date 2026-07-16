@@ -30,7 +30,6 @@ export default function ExpenseForm({ onAdded }) {
     setForm({ ...form, amount: "", description: "" });
     onAdded();
   }
-
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
       <select value={form.kind} onChange={set("kind")} aria-label="Type">
@@ -47,6 +46,11 @@ export default function ExpenseForm({ onAdded }) {
       <input type="date" value={form.spent_at} onChange={set("spent_at")} required />
       <button type="submit">Add entry</button>
       {error && <p className="error span-all">{error}</p>}
+      {form.kind === "expense" && (
+        <select value={form.category} onChange={set("category")} aria-label="Category">
+        {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+      </select>
+    )}
     </form>
   );
 }
