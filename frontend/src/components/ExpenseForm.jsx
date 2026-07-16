@@ -38,19 +38,16 @@ export default function ExpenseForm({ onAdded }) {
       </select>
       <input type="number" step="0.01" min="0.01" placeholder="Amount (₱)"
              value={form.amount} onChange={set("amount")} required />
-      <select value={form.category} onChange={set("category")} aria-label="Category">
+      {form.kind === "expense" && (
+        <select value={form.category} onChange={set("category")} aria-label="Category">
         {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
-      </select>
+      </select>)}
       <input placeholder="Description (optional)"
              value={form.description} onChange={set("description")} />
       <input type="date" value={form.spent_at} onChange={set("spent_at")} required />
       <button type="submit">Add entry</button>
       {error && <p className="error span-all">{error}</p>}
-      {form.kind === "expense" && (
-        <select value={form.category} onChange={set("category")} aria-label="Category">
-        {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
-      </select>
-    )}
+
     </form>
   );
 }
