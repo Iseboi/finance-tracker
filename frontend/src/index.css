@@ -492,6 +492,8 @@ a.nav-link { text-decoration: none; }
 }
 @media (max-width: 860px) {
   .columns { grid-template-columns: 1fr; }
+  /* sticky rail overlaps the charts once columns stack — pin it off */
+  .rail { position: static; }
   .hero { grid-template-columns: 1fr; align-items: start; }
   .hero .net { font-size: 2.8rem; }
   .hero-stats { gap: 1.5rem; }
@@ -702,4 +704,86 @@ a.nav-link { text-decoration: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* --- 1) Chart overlap fix ---------------------------------------
+   Grid/flex children default to min-width:auto, which lets wide
+   content (Recharts measures itself against it) overflow its column
+   and visually overlap siblings. Forcing min-width:0 restores
+   normal shrinking. This is the classic Recharts-in-grid bug. */
+.columns > * ,
+.charts > * ,
+.chart,
+.rail,
+.panel {
+  min-width: 0;
+}
+
+.chart {
+  position: relative;
+  overflow: hidden;         /* belt-and-braces: nothing escapes the card */
+}
+
+.recharts-responsive-container {
+  max-width: 100%;
+}
+
+/* --- 2) Collapsible entry form (mobile only) -------------------- */
+.form-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.form-head h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #012a4a;
+}
+.form-toggle {
+  display: none;            /* desktop: invisible, form always shown */
+}
+
+@media (max-width: 760px) {
+  /* Stack the dashboard columns so the form rail sits above charts
+     instead of beside (or under) them. If your .columns already
+     stacks at another breakpoint, this simply reinforces it. */
+  .columns {
+    display: block;
+  }
+  .columns > * {
+    width: 100%;
+  }
+  .columns > * + * {
+    margin-top: 1rem;
+  }
+
+  .form-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 44px;                       /* comfortable tap target */
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #01497c;
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .form-head {
+    margin-bottom: 0;
+  }
+  .expense-form {
+    display: none;                     /* collapsed by default on mobile */
+  }
+  .expense-form.open {
+    display: grid;
+    margin-top: 0.75rem;
+  }
 }

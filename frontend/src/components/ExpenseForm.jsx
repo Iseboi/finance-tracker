@@ -42,14 +42,18 @@ export default function ExpenseForm({ onAdded }) {
 
   return (
     <div className="form-card">
-      <button
-        type="button"
-        className="form-toggle"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
-        {open ? "Hide form" : "Add an entry"}
-      </button>
+      <div className="form-head">
+        <h2>Add an entry</h2>
+        <button
+          type="button"
+          className="form-toggle"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-label={open ? "Collapse form" : "Expand form"}
+        >
+          {open ? "\u2212" : "+"}
+        </button>
+      </div>
       <form className={`expense-form ${open ? "open" : ""}`} onSubmit={handleSubmit}>
         <div className="seg" role="radiogroup" aria-label="Type">
           <button
