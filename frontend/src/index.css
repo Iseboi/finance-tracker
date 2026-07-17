@@ -246,6 +246,7 @@ button.link:hover { background: none; color: #fff; text-decoration: underline; }
   font-weight: 500;
   cursor: pointer;
 }
+a.nav-link { text-decoration: none; }
 .nav-link:hover { background: rgba(169, 214, 229, 0.1); color: var(--sky); }
 .nav-link.active {
   background: rgba(169, 214, 229, 0.14);
@@ -639,6 +640,65 @@ button.link:hover { background: none; color: #fff; text-decoration: underline; }
   margin: 0;
   background: var(--surface);
 }
+
+/* ---------- transactions & reports pages ---------- */
+.page-head { margin: 0.25rem 0 1.4rem; }
+.page-head h1 {
+  margin: 0;
+  font-size: 2.1rem;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.page-head p { margin: 0.15rem 0 0; color: var(--ink-soft); font-size: 0.92rem; }
+
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.4rem;
+}
+.stat-strip .stat { padding: 1.1rem 1.4rem; }
+.stat-strip strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.2rem;
+}
+.stat-strip .pos { color: var(--income); }
+.stat-strip .neg { color: var(--expense); }
+@media (max-width: 720px) {
+  .stat-strip { grid-template-columns: 1fr; gap: 0.75rem; }
+}
+
+.search { min-width: 250px; }
+@media (max-width: 720px) {
+  .search { min-width: 0; width: 100%; }
+}
+
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.pct {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--tint);
+  overflow: hidden;
+  min-width: 90px;
+}
+.pct > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-deep), var(--steel));
+  border-radius: 999px;
+}
+.pct-num { color: var(--ink-faint); font-size: 0.75rem; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }

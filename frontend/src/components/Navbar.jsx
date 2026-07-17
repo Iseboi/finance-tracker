@@ -1,12 +1,16 @@
 // Modular navbar: horizontal links on desktop, side drawer on mobile.
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
-const LINKS = ["Dashboard", "Transactions", "Reports"];
+const LINKS = [
+  { to: "/", label: "Dashboard" },
+  { to: "/transactions", label: "Transactions" },
+  { to: "/reports", label: "Reports" },
+];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("Dashboard");
   const { logout } = useAuth();
 
   const dateLabel = new Date().toLocaleDateString(undefined, {
@@ -33,18 +37,17 @@ export default function Navbar() {
         onClick={() => setOpen(false)}
       />
       <div className={`nav-links ${open ? "open" : ""}`}>
-        {LINKS.map((l) => (
-          <button
-            key={l}
-            className={`nav-link ${active === l ? "active" : ""}`}
-            onClick={() => {
-              setActive(l);
-              setOpen(false);
-            }}
+        {LINKS.map(({ to, label }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === "/"}
+            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+            onClick={() => setOpen(false)}
           >
             <i className="arrow-ico" aria-hidden="true" />
-            {l}
-          </button>
+            {label}
+          </NavLink>
         ))}
         <div className="nav-side">
           <p className="date">{dateLabel}</p>
