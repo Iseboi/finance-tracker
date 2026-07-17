@@ -17,10 +17,7 @@ class Settings(BaseSettings):
 
     # Email (Brevo SMTP free tier). Leave empty in dev:
     # reset links are then printed to the console instead of emailed.
-    SMTP_HOST: str = ""
-    SMTP_PORT: int = 587
-    SMTP_USER: str = ""
-    SMTP_PASS: str = ""
+    BREVO_API_KEY: str = ""
     EMAIL_FROM: str = "Finance Tracker <noreply@example.com>"
 
     class Config:
