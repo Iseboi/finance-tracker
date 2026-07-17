@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { API } from "../api";
+import arrow from "../assets/next.png";
 
 export default function ResetPassword() {
   // useSearchParams reads the query string — this is how the token
@@ -49,7 +50,7 @@ export default function ResetPassword() {
         <div className="auth-card">
           <p className="brand">Finance Tracker</p>
           <h1>Invalid link</h1>
-          <p>
+          <p className="tagline">
             This page needs a reset token.{" "}
             <Link to="/forgot-password">Request a new link</Link>.
           </p>
@@ -63,9 +64,10 @@ export default function ResetPassword() {
       <div className="auth-card">
         <p className="brand">Finance Tracker</p>
         <h1>Choose a new password</h1>
+        <p className="tagline">Make it at least 8 characters.</p>
         <form onSubmit={handleSubmit}>
           <label>
-            New password <span className="hint">(min. 8 characters)</span>
+            New password
             <input type="password" value={password} autoComplete="new-password"
                    onChange={(e) => setPassword(e.target.value)} required />
           </label>
@@ -75,8 +77,8 @@ export default function ResetPassword() {
                    onChange={(e) => setConfirm(e.target.value)} required />
           </label>
           {error && <p className="error">{error}</p>}
-          <button type="submit" disabled={busy}>
-            {busy ? "Saving…" : "Set new password"}
+          <button type="submit" className="cta" disabled={busy}>
+            {busy ? "Saving…" : "Set new password"} <img src={arrow} alt="" className="arrow" />
           </button>
         </form>
       </div>

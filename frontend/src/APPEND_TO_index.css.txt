@@ -1,0 +1,70 @@
+/* ============================================================
+   APPEND THIS BLOCK TO THE END OF src/index.css
+   (Your index.css didn't come through in the upload, so these
+   rules are written defensively to layer on top of your theme.)
+   ============================================================ */
+
+/* --- 1) Chart overlap fix ---------------------------------------
+   Grid/flex children default to min-width:auto, which lets wide
+   content (Recharts measures itself against it) overflow its column
+   and visually overlap siblings. Forcing min-width:0 restores
+   normal shrinking. This is the classic Recharts-in-grid bug. */
+.columns > * ,
+.charts > * ,
+.chart,
+.rail,
+.panel {
+  min-width: 0;
+}
+
+.chart {
+  position: relative;
+  overflow: hidden;         /* belt-and-braces: nothing escapes the card */
+}
+
+.recharts-responsive-container {
+  max-width: 100%;
+}
+
+/* --- 2) Collapsible entry form (mobile only) -------------------- */
+.form-toggle {
+  display: none;            /* desktop: invisible, form always shown */
+}
+
+@media (max-width: 760px) {
+  /* Stack the dashboard columns so the form rail sits above charts
+     instead of beside (or under) them. If your .columns already
+     stacks at another breakpoint, this simply reinforces it. */
+  .columns {
+    display: block;
+  }
+  .columns > * {
+    width: 100%;
+  }
+  .columns > * + * {
+    margin-top: 1rem;
+  }
+
+  .form-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 12px;               /* tweak to match your theme */
+    background: #01497c;               /* tweak to match your theme */
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .expense-form {
+    display: none;                     /* collapsed by default on mobile */
+  }
+  .expense-form.open {
+    display: grid;                     /* if your form uses flex, put flex here */
+    margin-top: 0.75rem;
+  }
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { API } from "../api";
+import arrow from "../assets/next.png";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ export default function ForgotPassword() {
         <div className="auth-card">
           <p className="brand">Finance Tracker</p>
           <h1>Check your email</h1>
-          <p>
+          <p className="tagline">
             If that email is registered, a reset link is on its way. The link
             is valid for 30 minutes.
           </p>
@@ -50,6 +51,7 @@ export default function ForgotPassword() {
       <div className="auth-card">
         <p className="brand">Finance Tracker</p>
         <h1>Forgot password</h1>
+        <p className="tagline">We&rsquo;ll email you a link to set a new one.</p>
         <form onSubmit={handleSubmit}>
           <label>
             Email
@@ -57,8 +59,8 @@ export default function ForgotPassword() {
                    onChange={(e) => setEmail(e.target.value)} required />
           </label>
           {error && <p className="error">{error}</p>}
-          <button type="submit" disabled={busy}>
-            {busy ? "Sending…" : "Send reset link"}
+          <button type="submit" className="cta" disabled={busy}>
+            {busy ? "Sending…" : "Send reset link"} <img src={arrow} alt="" className="arrow" />
           </button>
         </form>
         <p className="switch">
