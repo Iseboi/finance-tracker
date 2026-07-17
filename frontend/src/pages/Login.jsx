@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { API } from "../api";
+import arrow from "../assets/next.png";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -38,7 +39,8 @@ export default function Login() {
     <div className="auth-wrap">
       <div className="auth-card">
         <p className="brand">Finance Tracker</p>
-        <h1>Sign in</h1>
+        <h1>Welcome back</h1>
+        <p className="tagline">Sign in to pick up where you left off.</p>
         <form onSubmit={handleSubmit}>
           <label>
             Email
@@ -51,8 +53,8 @@ export default function Login() {
                    onChange={(e) => setPassword(e.target.value)} required />
           </label>
           {error && <p className="error">{error}</p>}
-          <button type="submit" disabled={busy}>
-            {busy ? "Signing in…" : "Sign in"}
+          <button type="submit" className="cta" disabled={busy}>
+            {busy ? "Signing in…" : "Sign in"} <img src={arrow} alt="" className="arrow" />
           </button>
         </form>
         <p className="switch">

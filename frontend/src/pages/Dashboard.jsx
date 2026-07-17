@@ -1,15 +1,21 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { apiFetch } from "../api";
 import { useAuth } from "../AuthContext";
 import ExpenseForm from "../components/ExpenseForm";
 import ExpenseList from "../components/ExpenseList";
 import SpendingChart from "../components/SpendingChart";
+import BudgetBar from "../components/BudgetBar";
+import Navbar from "../components/Navbar";
+
+const CATEGORIES = ["Food", "Transport", "Bills", "Entertainment", "Health", "Other"];
 
 export default function Dashboard() {
   const [expenses, setExpenses] = useState([]);
   const [byCategory, setByCategory] = useState([]);
   const [byMonth, setByMonth] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filterCat, setFilterCat] = useState("all");
+  const [filterMonth, setFilterMonth] = useState("all");
   const { logout } = useAuth();
 
   // Promise.all fires the three requests in PARALLEL, not sequentially.
@@ -40,34 +46,98 @@ export default function Dashboard() {
   const totalIncome = expenses
     .filter((e) => e.kind === "income")
     .reduce((s, e) => s + Number(e.amount), 0);
+  const net = totalIncome - totalExpenses;
+
+  const months = useMemo(
+    () => [...new Set(expenses.map((e) => e.spent_at.slice(0, 7)))].sort().reverse(),
+    [expenses]
+  );
+  const filtered = expenses.filter(
+    (e) =>
+      (filterCat === "all" || e.category === filterCat) &&
+      (filterMonth === "all" || e.spent_at.startsWith(filterMonth))
+  );
+  const isFiltered = filterCat !== "all" || filterMonth !== "all";
+
+  const thisMonth = new Date().toISOString().slice(0, 7);
+  const spentThisMonth = expenses
+    .filter((e) => e.kind === "expense" && e.spent_at.startsWith(thisMonth))
+    .reduce((s, e) => s + Number(e.amount), 0);
+
+  const monthLabel = (m) =>
+    new Date(`${m}-02`).toLocaleDateString(undefined, { month: "long", year: "numeric" });
 
   return (
-    <main className="dashboard">
-      <header className="topbar">
-        <h1>Finance Tracker</h1>
-        <button className="ghost" onClick={logout}>Log out</button>
-      </header>
+    <>
+      <Navbar />
+      <main className="dashboard">
 
-      <section className="totals">
-        <div className="total-card income">
-          <span>Income</span>
-          <strong>₱{totalIncome.toFixed(2)}</strong>
+      <section className="hero">
+        <div>
+          <span className="label">Net balance</span>
+          <strong className={`net ${net < 0 ? "negative" : ""}`}>₱{net.toFixed(2)}</strong>
         </div>
-        <div className="total-card expense">
-          <span>Expenses</span>
-          <strong>₱{totalExpenses.toFixed(2)}</strong>
+        <div className="hero-stats">
+          <div>
+            <span className="label">Income</span>
+            <em className="income">+₱{totalIncome.toFixed(2)}</em>
+          </div>
+          <div>
+            <span className="label">Expenses</span>
+            <em className="expense">-₱{totalExpenses.toFixed(2)}</em>
+          </div>
         </div>
-        <div className="total-card">
-          <span>Net</span>
-          <strong>₱{(totalIncome - totalExpenses).toFixed(2)}</strong>
-        </div>
+        <BudgetBar spent={spentThisMonth} />
       </section>
 
-      <ExpenseForm onAdded={load} />
-      <SpendingChart byCategory={byCategory} byMonth={byMonth} />
-      {loading
-        ? <p className="empty">Loading…</p>
-        : <ExpenseList expenses={expenses} onDelete={handleDelete} />}
+      <div className="columns">
+        <aside className="rail">
+          <section className="panel">
+            <ExpenseForm onAdded={load} />
+          </section>
+        </aside>
+
+        <div>
+          <SpendingChart byCategory={byCategory} byMonth={byMonth} />
+
+          <section className="ledger">
+            <div className="ledger-head">
+              <div className="chips">
+                <button
+                  className={`chip ${filterCat === "all" ? "active" : ""}`}
+                  onClick={() => setFilterCat("all")}
+                >
+                  All
+                </button>
+                {CATEGORIES.map((c) => (
+                  <button
+                    key={c}
+                    className={`chip ${filterCat === c ? "active" : ""}`}
+                    onClick={() => setFilterCat(c)}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+              <select
+                value={filterMonth}
+                onChange={(e) => setFilterMonth(e.target.value)}
+                aria-label="Filter by month"
+              >
+                <option value="all">All months</option>
+                {months.map((m) => (
+                  <option key={m} value={m}>{monthLabel(m)}</option>
+                ))}
+              </select>
+            </div>
+            {loading ? (
+              <p className="empty">Loading your entries…</p>
+            ) : (
+              <ExpenseList expenses={filtered} onDelete={handleDelete} filtered={isFiltered} />
+            )}
+          </section>
+        </div>
+      </div>
     </main>
   );
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { API } from "../api";
+import arrow from "../assets/next.png";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -47,6 +48,7 @@ export default function Register() {
       <div className="auth-card">
         <p className="brand">Finance Tracker</p>
         <h1>Create account</h1>
+        <p className="tagline">A quiet place to keep your money in order.</p>
         <form onSubmit={handleSubmit}>
           <label>
             Email
@@ -59,8 +61,8 @@ export default function Register() {
                    onChange={(e) => setPassword(e.target.value)} required />
           </label>
           {error && <p className="error">{error}</p>}
-          <button type="submit" disabled={busy}>
-            {busy ? "Creating…" : "Create account"}
+          <button type="submit" className="cta" disabled={busy}>
+            {busy ? "Creating…" : "Create account"} <img src={arrow} alt="" className="arrow" />
           </button>
         </form>
         <p className="switch">

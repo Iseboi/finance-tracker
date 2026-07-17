@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { apiFetch } from "../api";
+import arrow from "../assets/next.png";
 
 const CATEGORIES = ["Food", "Transport", "Bills", "Entertainment", "Health", "Other"];
 
@@ -30,24 +31,49 @@ export default function ExpenseForm({ onAdded }) {
     setForm({ ...form, amount: "", description: "" });
     onAdded();
   }
+
   return (
     <form className="expense-form" onSubmit={handleSubmit}>
-      <select value={form.kind} onChange={set("kind")} aria-label="Type">
-        <option value="expense">Expense</option>
-        <option value="income">Income</option>
-      </select>
-      <input type="number" step="0.01" min="0.01" placeholder="Amount (₱)"
-             value={form.amount} onChange={set("amount")} required />
+      <div className="seg" role="radiogroup" aria-label="Type">
+        <button
+          type="button"
+          className={form.kind === "expense" ? "active" : ""}
+          onClick={() => setForm({ ...form, kind: "expense" })}
+        >
+          Expense
+        </button>
+        <button
+          type="button"
+          className={form.kind === "income" ? "active" : ""}
+          onClick={() => setForm({ ...form, kind: "income" })}
+        >
+          Income
+        </button>
+      </div>
+      <input
+        type="number"
+        step="0.01"
+        min="0.01"
+        placeholder="Amount (₱)"
+        value={form.amount}
+        onChange={set("amount")}
+        required
+      />
       {form.kind === "expense" && (
         <select value={form.category} onChange={set("category")} aria-label="Category">
-        {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
-      </select>)}
-      <input placeholder="Description (optional)"
-             value={form.description} onChange={set("description")} />
+          {CATEGORIES.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
+      )}
+      <input
+        placeholder="Description (optional)"
+        value={form.description}
+        onChange={set("description")}
+      />
       <input type="date" value={form.spent_at} onChange={set("spent_at")} required />
-      <button type="submit">Add entry</button>
-      {error && <p className="error span-all">{error}</p>}
-
+      <button type="submit" className="cta">Add entry <img src={arrow} alt="" className="arrow" /></button>
+      {error && <p className="error">{error}</p>}
     </form>
   );
 }

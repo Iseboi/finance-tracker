@@ -3,7 +3,15 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from "recharts";
 
-const COLORS = ["#1f5c45", "#a4432c", "#2e4a6b", "#8a6d1f", "#5e4a7d", "#555555"];
+const COLORS = ["#01497c", "#2c7da0", "#61a5c2", "#89c2d9", "#2a6f97", "#a9d6e5"];
+
+const tooltipStyle = {
+  background: "#ffffff",
+  border: "1px solid #bcd9e7",
+  borderRadius: 10,
+  boxShadow: "0 12px 36px -14px rgba(1,42,74,0.35)",
+  fontFamily: "inherit",
+};
 
 export default function SpendingChart({ byCategory, byMonth }) {
   const catData = byCategory.map((c) => ({
@@ -22,33 +30,55 @@ export default function SpendingChart({ byCategory, byMonth }) {
     <section className="charts">
       {catData.length > 0 && (
         <div className="chart">
-          <h2>Spending by category</h2>
           <ResponsiveContainer width="100%" height={260}>
             <PieChart>
-              <Pie data={catData} dataKey="value" nameKey="name"
-                   outerRadius={90} label>
+              <Pie
+                data={catData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={58}
+                outerRadius={88}
+                paddingAngle={2}
+                stroke="#ffffff"
+                strokeWidth={2}
+              >
                 {catData.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
               </Pie>
-              <Tooltip formatter={(v) => `₱${Number(v).toFixed(2)}`} />
-              <Legend />
+              <Tooltip
+                formatter={(v) => `₱${Number(v).toFixed(2)}`}
+                contentStyle={tooltipStyle}
+              />
+              <Legend iconType="circle" iconSize={8} />
             </PieChart>
           </ResponsiveContainer>
         </div>
       )}
       {monthData.length > 0 && (
         <div className="chart">
-          <h2>Income vs expenses by month</h2>
           <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={monthData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip formatter={(v) => `₱${Number(v).toFixed(2)}`} />
-              <Legend />
-              <Bar dataKey="Income" fill="#1f5c45" radius={[3, 3, 0, 0]} />
-              <Bar dataKey="Expenses" fill="#a4432c" radius={[3, 3, 0, 0]} />
+            <BarChart data={monthData} barGap={4}>
+              <CartesianGrid stroke="#d3e4ee" strokeDasharray="4 4" vertical={false} />
+              <XAxis
+                dataKey="month"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#5b7f99", fontSize: 12 }}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#5b7f99", fontSize: 12 }}
+              />
+              <Tooltip
+                formatter={(v) => `₱${Number(v).toFixed(2)}`}
+                contentStyle={tooltipStyle}
+                cursor={{ fill: "rgba(1,42,74,0.05)" }}
+              />
+              <Legend iconType="circle" iconSize={8} />
+              <Bar dataKey="Income" fill="#2c7da0" radius={[6, 6, 0, 0]} maxBarSize={36} />
+              <Bar dataKey="Expenses" fill="#61a5c2" radius={[6, 6, 0, 0]} maxBarSize={36} />
             </BarChart>
           </ResponsiveContainer>
         </div>
