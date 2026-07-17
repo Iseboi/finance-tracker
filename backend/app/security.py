@@ -42,6 +42,12 @@ def create_refresh_token(user_id: str) -> str:
                        timedelta(days=settings.REFRESH_TOKEN_DAYS))
 
 
+def create_reset_token(user_id: str) -> str:
+    """Password-reset token: a third token type, short-lived (30 min).
+    Verified with the same decode_token(..., expected_type="reset")."""
+    return _make_token(user_id, "reset", timedelta(minutes=30))
+
+
 def decode_token(token: str, expected_type: str) -> str | None:
     """Return the user id if the token is valid and of the expected type."""
     try:

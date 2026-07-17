@@ -15,6 +15,14 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_DAYS: int = 7
     FRONTEND_ORIGIN: str = "http://localhost:5173"
 
+    # Email (Brevo SMTP free tier). Leave empty in dev:
+    # reset links are then printed to the console instead of emailed.
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASS: str = ""
+    EMAIL_FROM: str = "Finance Tracker <noreply@example.com>"
+
     class Config:
         env_file = ".env"
 
