@@ -492,8 +492,6 @@ a.nav-link { text-decoration: none; }
 }
 @media (max-width: 860px) {
   .columns { grid-template-columns: 1fr; }
-  /* sticky rail overlaps the charts once columns stack — pin it off */
-  .rail { position: static; }
   .hero { grid-template-columns: 1fr; align-items: start; }
   .hero .net { font-size: 2.8rem; }
   .hero-stats { gap: 1.5rem; }
@@ -503,7 +501,9 @@ a.nav-link { text-decoration: none; }
   .rail { position: static; }
 }
 
-.rail { position: sticky; top: 5rem; }
+@media (min-width: 861px) {
+  .rail { position: sticky; top: 5rem; }
+}
 
 .expense-form { display: grid; gap: 0.7rem; }
 
